@@ -1,0 +1,10 @@
+{
+  "sandbox_version": "1.4",
+  "causal_window": 12,
+  "epsilon_tested": 0.05,
+  "valid_bindings": 4,
+  "total_cycles": 5,
+  "avg_friction_on_pass": 0.3585,
+  "epsilon_friction_recommended": 0.3785,
+  "constitutional_anchor": "Z_R2.3, \u0393_Locality, role_binding.co-emergent"
+}

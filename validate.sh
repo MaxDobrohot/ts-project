@@ -1,0 +1,1 @@
+#!/bin/bashcd "$(dirname "$0")"python3 validator/ts_validator.py validator/config/validator_config.yaml contracts/bridges/m4_bridge_contract.yaml

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TS-Validator Dashboard</title>
+    <style>
+        body { font-family: monospace; background: #1a1a2e; color: #eee; padding: 20px; max-width: 800px; margin: auto; }
+        .card { background: #16213e; border-radius: 8px; padding: 15px; margin: 15px 0; border: 1px solid #0f3460; }
+        .metric { display: flex; justify-content: space-between; margin: 8px 0; border-bottom: 1px solid #2a2a4a; padding-bottom: 5px; }
+        .bar { background: #0f3460; height: 22px; border-radius: 4px; margin: 8px 0; overflow: hidden; }
+        .fill { background: #e94560; height: 100%; transition: width 0.4s ease; }
+        .pass { color: #4ade80; font-weight: bold; }
+        .pending { color: #fbbf24; font-weight: bold; }
+        h1, h3 { margin-top: 0; }
+        a { color: #60a5fa; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>📊 TS-Validator Metrics</h1>
+    <p><small>Generated: 2026-05-16 09:43:48</small></p>
+    
+    <div class="card">
+        <h3>🧪 D-Sandbox</h3>
+        <div class="metric"><span>Valid bindings:</span><strong>44/50</strong></div>
+        <div class="metric"><span>Success rate:</span><strong>88.0%</strong></div>
+        <div class="bar"><div class="fill" style="width:88.0%"></div></div>
+        <div class="metric"><span>Avg friction:</span><strong>0.355</strong></div>
+        <div class="metric"><span>ε_rec:</span><strong>0.375</strong></div>
+    </div>
+    
+    <div class="card">
+        <h3>🎯 Layer 4: MetaCheck</h3>
+        <div class="metric"><span>ΔΓ_X:</span><strong>0.6450</strong></div>
+        <div class="metric"><span>Threshold (ε_X):</span><strong>0.25</strong></div>
+        <div class="metric">
+            <span>Status:</span>
+            <strong class="pass">✅ PASS</strong>
+        </div>
+        <div class="bar"><div class="fill" style="width:100%"></div></div>
+    </div>
+    
+    <div class="card">
+        <h3>🔗 Quick Links</h3>
+        <p><a href="../output/layer1-3.log">Layer 1–3 Log</a> |
+           <a href="../output/sandbox.log">Sandbox Log</a> |
+           <a href="../output/layer4.log">Layer 4 Log</a></p>
+    </div>
+</body>
+</html>
