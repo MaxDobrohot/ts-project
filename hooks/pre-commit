@@ -1,0 +1,15 @@
+#!/bin/bash
+# hooks/pre-commit — Конституционный страж репозитория
+echo "🛡️ TS-Validator Pre-Commit: проверка инвариантов..."
+
+# Запускаем фиксированный пайплайн в тихом режиме
+if ! ./scripts/run_full_validation_pipeline.sh > /tmp/ts_precommit.log 2>&1; then
+    echo "❌ COMMIT REJECTED: Нарушение конституционных инвариантов."
+    echo "📜 Детали:"
+    cat /tmp/ts_precommit.log
+    echo "⚠️  Исправьте YAML/контракты или запустите ./scripts/run_full_validation_pipeline.sh"
+    exit 1
+fi
+
+echo "✅ Pre-commit PASSED: Конституционный контур валиден."
+exit 0
