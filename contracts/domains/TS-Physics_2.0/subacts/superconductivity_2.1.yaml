@@ -11,10 +11,21 @@ validator_version: "TS-Validator-1.4"
 schema_version: "1.1.0"
 validated_at: null
 
+# Явное наследование инвариантов
+subact_inherits:
+  all_invariants_from: "2.0"
+  inheritance_type: "profiling_not_replacement"
+
+# Конституционные инварианты (наследуются + доменные)
+constitutional_invariants:
+  domain_specific_Z:
+    - "Z_Phys.1"  # запрет на нарушение причинности в квантовых процессах
+    - "Z_Phys.2"  # запрет на интерпретацию сверхпроводимости как классической фазовой транзиции без учёта квантовой когерентности
+
 # Профилирование уровней под сверхпроводимость
 levels:
   A:
-    event_type: "coherence_transition"  # специфика домена
+    event_type: "coherence_transition"
     agent_locus: "condensed_matter_lab"
   B:
     retention_policy: "log_coherence_data"
@@ -28,6 +39,7 @@ levels:
   D:
     self_play_protocol: "simulate_coherence_patterns"
     trickster_detection: "anomalous_phase_transitions"
+    imaginary_time_anchor: "it_critical_temp"  # явная связь с clock_protocol
   E:
     meta_narrative_update: "update_coherence_theory"
     cross_domain_sync: "sync_with_materials_science"
@@ -45,12 +57,24 @@ language_contract:
   constraint_links:
     - "superconductivity_ontology_UUID"
 
-# Метрики для валидации (заполняется TS-Validator)
+# Метрики для валидации
 metrics:
   delta_gamma_x: null
   epsilon_x: null
   valid_bindings_ratio: null
   x_commit_lock: false
+  cross_domain_gamma:
+    target_domain: "materials_science"
+    intersection_metric: "shared_coherence_ontology"
+    baseline: null
+
+# Project mapping (явная связь с TS-Core)
+project_mapping:
+  inherits_from: "2.0"
+  TS-Graph: "coherence_events_as_nodes_with_phase_edges"
+  TS-Clock: "tau_sc_mapped_to_critical_temperature_transitions"
+  TS-Interpreter: "resistance_data → coherence_narratives"
+  TS-Optimizer: "score_hypotheses_by_critical_current_gain"
 
 # Заметки для валидатора
 validator_notes: |
@@ -59,3 +83,5 @@ validator_notes: |
   2. Профилировать уровни под физику сверхпроводимости
   3. Пройти валидацию относительно базового акта
   4. Не вводить противоречащих Z-правил
+  # Маппинг калибровки ε:
+  epsilon_mapping: "sandbox_calibration → coherence_calibration via critical_temperature_experiments"
