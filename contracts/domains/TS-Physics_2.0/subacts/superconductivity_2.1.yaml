@@ -1,0 +1,61 @@
+# ПодАкт: TS-Physics/Superconductivity_2.1
+# Версия: 1.1.0
+# Основание: act_2.0.yaml + KVS_1.1
+# Статус: предложен для валидации
+
+subact_id: "2.1"
+name: "TS-Physics/Superconductivity"
+based_on: "2.0"
+status: "proposed"
+validator_version: "TS-Validator-1.4"
+schema_version: "1.1.0"
+validated_at: null
+
+# Профилирование уровней под сверхпроводимость
+levels:
+  A:
+    event_type: "coherence_transition"  # специфика домена
+    agent_locus: "condensed_matter_lab"
+  B:
+    retention_policy: "log_coherence_data"
+    causal_window: "critical_temperature_window"
+  C:
+    epsilon_rules:
+      initial_value: 0.375
+      domain_specific: true
+      source: "coherence_calibration"
+    constraint_schema: "superconductivity_ontology_UUID"
+  D:
+    self_play_protocol: "simulate_coherence_patterns"
+    trickster_detection: "anomalous_phase_transitions"
+  E:
+    meta_narrative_update: "update_coherence_theory"
+    cross_domain_sync: "sync_with_materials_science"
+
+# Доменные M4-теги
+language_contract:
+  M4_tags:
+    - "cooper_pair_formation"
+    - "meissner_effect"
+    - "critical_current"
+    - "flux_quantization"
+  clock_protocol:
+    base: "Lamport_semantic"
+    domain_offset: "tau_sc = tau + it_critical_temp"
+  constraint_links:
+    - "superconductivity_ontology_UUID"
+
+# Метрики для валидации (заполняется TS-Validator)
+metrics:
+  delta_gamma_x: null
+  epsilon_x: null
+  valid_bindings_ratio: null
+  x_commit_lock: false
+
+# Заметки для валидатора
+validator_notes: |
+  Этот ПодАкт должен:
+  1. Наследовать все инварианты из act_2.0.yaml
+  2. Профилировать уровни под физику сверхпроводимости
+  3. Пройти валидацию относительно базового акта
+  4. Не вводить противоречащих Z-правил

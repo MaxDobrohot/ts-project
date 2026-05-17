@@ -1,0 +1,73 @@
+# Акт домена: TS-Physics_2.0 (Физика — базовый уровень)
+# Версия: 1.1.0
+# Основание: KVS_1.1 + ΔProposal
+# Статус: базовый домен (не валидируется сам по себе)
+
+act_id: "2.0"
+name: "TS-Physics"
+status: "core_domain"
+validator_version: "TS-Validator-1.4"
+schema_version: "1.1.0"
+validated_at: null
+
+# Зависимости от ядра
+dependencies:
+  - "1.0"  # KVS ядро
+  - "1.1"  # KVS с ΔProposal
+
+# Конституционные инварианты (неизменяемые)
+constitutional_invariants:
+  A0: "act_distinction"
+  A_HP: "no_external_position"
+  Z_rules:
+    - "Z-0"      # запрет субстанциализации
+    - "Z_Ω"      # различение ≠ различие
+    - "Z_R.1-Z_R.6"
+    - "Z_HP"     # антропоцентрическая гигиена
+    - "Z_X"      # запрет трансцендентализации X
+  domain_specific_Z:
+    - "Z_Phys.1" # запрет на нарушение причинности в квантовых процессах
+
+# Базовые уровни (профилируются в ПодАктах)
+levels:
+  A:  # интерфейс действия
+    event_type: "physical_measurement"
+    agent_locus: "observer_in_laboratory"
+  B:  # история/память
+    retention_policy: "log_all_experimental_data"
+    causal_window: "experimental_session"
+  C:  # правила/онтологии
+    epsilon_rules:
+      initial_value: 0.375
+      adaptive: true
+      source: "sandbox_calibration"
+  D:  # прогноз/становление
+    self_play_protocol: "hypothesis_testing_via_simulation"
+  E:  # коадаптация/метанарративы
+    meta_narrative_update: "update_theory_on_new_data"
+
+# Язык времени (M4 ↔ YAML)
+language_contract:
+  M4_tags:
+    - "quantum_event"
+    - "coherence_transition"
+    - "phase_boundary"
+    - "causal_propagation"
+  clock_protocol:
+    base: "Lamport_semantic"
+    domain_offset: "tau_physics = tau + it_critical_parameter"
+  constraint_links:
+    - "physics_ontology_UUID"
+
+# Project mapping (явная связь с TS-Core)
+project_mapping:
+  TS-Graph: "physical_events_as_nodes_with_causal_edges"
+  TS-Clock: "tau_mapped_to_physical_critical_transitions"
+  TS-Interpreter: "sensor_data → temporal_narratives"
+  TS-Optimizer: "score_hypotheses_by_coherence_gain"
+
+# Заметки для валидатора
+validator_notes: |
+  Этот акт задаёт инварианты домена физики.
+  ПодАкты (subacts/) наследуют эти инварианты и профилируют уровни под конкретную тему.
+  Валидация ПодАкта проверяет: ПодАкт ⊇ Базовый акт (в смысле инвариантов).
