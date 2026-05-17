@@ -1,8 +1,8 @@
 #!/bin/bash
-# hooks/pre-commit — Конституционный страж (v1.2, Γ_Locality compliant)
+# hooks/pre-commit — v1.2, Γ_Locality compliant
 echo "🛡️ TS-Validator Pre-Commit: проверка инвариантов..."
 
-# 1. Считаем только изменённые файлы в causal_window (contracts/ и validator/)
+# Проверяем только changed files в causal_window (contracts/ и validator/)
 CHANGED_FILES=$(git diff --cached --name-only -- 'contracts/*' 'validator/*' | wc -l | tr -d ' ')
 
 if [ "$CHANGED_FILES" -eq 0 ]; then
@@ -16,7 +16,7 @@ if [ "$CHANGED_FILES" -gt 15 ]; then
     exit 0
 fi
 
-# 2. Запускаем валидацию только для затронутых слоёв
+# Запускаем валидацию только для затронутых слоёв
 if ! ./scripts/run_full_validation_pipeline.sh > /tmp/ts_precommit.log 2>&1; then
     echo "❌ COMMIT REJECTED: Нарушение конституционных инвариантов."
     echo "📜 Детали:"

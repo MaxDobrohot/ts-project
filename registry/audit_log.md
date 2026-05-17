@@ -36,3 +36,4 @@
 **Результат:** `X_Commit_Lock` открыт. Допустим конституционный апгрейд или запуск доменного акта N≥3.0 по тому же протоколу.
 
 | 2026-05-16T00:00:00Z | bridge:m4 | VALIDATE+COMMIT | TS-Validator-1.4 | ✅ ALL PASS | Алгоритм зафиксирован в scripts/run_full_validation_pipeline.sh. Интегрирован pre-commit hook. X_Commit_Lock активирован. |
+| 2026-05-16T00:00:00Z | bridge:m4 | VALIDATE+COMMIT | TS-Validator-1.4 | ✅ ALL PASS | Алгоритм зафиксирован в scripts/run_full_validation_pipeline.sh. Интегрирован pre-commit hook (Γ_Locality). Дашборд опубликован на GitHub Pages (B-level snapshot, X_Commit_Lock). X_Commit_Lock активирован. |
