@@ -37,3 +37,4 @@
 
 | 2026-05-16T00:00:00Z | bridge:m4 | VALIDATE+COMMIT | TS-Validator-1.4 | ✅ ALL PASS | Алгоритм зафиксирован в scripts/run_full_validation_pipeline.sh. Интегрирован pre-commit hook. X_Commit_Lock активирован. |
 | 2026-05-16T00:00:00Z | bridge:m4 | VALIDATE+COMMIT | TS-Validator-1.4 | ✅ ALL PASS | Алгоритм зафиксирован в scripts/run_full_validation_pipeline.sh. Интегрирован pre-commit hook (Γ_Locality). Дашборд опубликован на GitHub Pages (B-level snapshot, X_Commit_Lock). X_Commit_Lock активирован. |
+| 2026-05-17T00:00:00Z | registry:fix | AMEND | TS-Validator-1.4 | ✅ FIXED | Устранены: дубль bridge:m4, некорректная вложенность core:1.1, лишние скобки в index.json. Добавлен адаптационный триггер ε в validator_config.yaml. Constraint integrity восстановлена. |
