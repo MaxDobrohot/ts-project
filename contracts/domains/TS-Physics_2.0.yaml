@@ -1,1 +1,81 @@
-﻿DomainAct:  act_id: "2.0"  name: "TS-Physics_2.0"  status: "domain_registered"  base_reference: "KVS_1.0"  validator_version: "TS-Validator-1.1"  dependencies: ["1.0", "X3_Meta"]    # PR_X3 Layer 1: Core Invariants  core_invariants:    A0_preservation: "act_distinction = quantum/event_registration; no pre-existing time substance"    A_HP_preservation: "observer_embedded_in_topology; no_external_position_flag=true"    Z_rules_enforced:      - Z_HP: "no_anthropocentric_consciousness; structural_self_reference_only"      - Z_Physics.1: "no_superluminal_causality; non_locality=emergent_correlation(B/C/D)"      - Z_R1.3: "A_modality_irreducible_to_B/C_graph_projection"      - Z_R2.1: "D_requires_prior_B/C_fixation"      - Z_R3.1: "A'_requires_D/E_self-play_or_trickster"    R1_R3_pipeline:      R1: "event_fixation → B/C_vertex + TS-Clock_AB"      R2: "B/C → D_virtual_graph(G_D) + temporal_logic_router"      R3: "D/E → A'_reassembly + ΔΓ>ε + theory_fork_or_co_adaptation"  # PR_X3 Layer 2: Gamma_Norm & ε-Initialization (FIXED)  gamma_norm:    formula: "Γ_norm(G) = Γ(G) / (|V|·|E|^α)"    alpha: 0.5    domain_specific: true    fixed_in: "C-rules (statistical_significance_threshold)"    computation:      scope: "causal_window (light_cone_constrained || logical_hb)"      metric: "spectral_radius_normalized_laplacian || strong_component_index"      complexity: "O(poly(|V|,|E|))"    epsilon_initialization:      strategy: "unified_information_criterion"      default: "AIC_delta < -2 || BIC_delta < 0"      bayesian_fallback: "Bayes_factor > 3 (weak_informative_prior)"      frequentist_fallback: "p < 0.05 (Benjamini-Hochberg_correction)"      domain_override: true      rationale: "Bridges paradigm gap via model comparison; prevents mixed-statistics violations"  # PR_X3 Layer 3: Language Contract (FIXED)  language_contract:    clock_protocol: "Lamport_semantic + proper_time_offset(δ_rel)"    m4_tags:      - tag: "quantum_measurement"        schema_ref: "yaml/schema/quantum_event.yaml"        temporal_logic: "LTL"      - tag: "quantum_branching"        schema_ref: "yaml/schema/quantum_branching_topology.yaml"        temporal_logic: "CTL* || QTL"        branching_semantics: "consistent_histories || path_integral"      - tag: "entangled_correlation"        schema_ref: "yaml/schema/bell_test_topology.yaml"        temporal_logic: "LTL/CTL"      - tag: "holographic_boundary"        schema_ref: "yaml/schema/ads_cft_encoding.yaml"        temporal_logic: "D-self-play"    constraint_schema_integrity: "C-rules_link_to_valid_B/C_subgraphs"    delta_domain_formula: "τ_phys = τ_base + δ_rel(S,R,V,T)"  # R2-Trigger Conditions (FIXED)  r2_trigger_conditions:    creation_mode: "on_R2_trigger"    allowed_triggers:      simulation_start: "LTL_spec || quantum_circuit || self-play_loop"      experimental_anomaly: "statistical_deviation > 3σ || unexpected_measurement"      theory_conflict: "Z_rule_violation_detected || Γ_friction > threshold"      manual_override: "exploratory_mode (requires X_commit_lock)"    validation: "All triggers preserve Z_R2.1 & Z_R2.3; G_D remains isolated until R3"  # PR_X3 Layer 4: MetaShift (X-Level)  meta_shift:    delta_gamma_X: "> ε_X"    validation_target: "successful_generation_of_testable_hypotheses"    examples:      - "C-correlation_mapping → Bell_test_B/C_topology"      - "D-iteration → AlphaGo/RL_emergent_time_model"      - "E-holography → AdS_CFT_boundary_co_adaptation"    x_commit_lock:      optimizer_approved: true      c_validated: true      direct_G_access: false  # Transaction & Lifecycle (Constitutional Contract)  transaction_properties:    atomic: true    rollback_on_Z_violation: true    snapshot_isolation: true  virtual_graph_lifecycle:    creation: "on_R2_trigger"    destruction: ["causal_window_expiry", "R3_commit", "gamma_below_sigma"]    orphan_handling: "mark_sweep"  conflict_resolution: "max(S) || max(R) || min(δ_rel)"
+# Шаблон доменного акта (генеративная грамматика ТС)
+# Версия: 1.1.0
+# Основание: KVS_1.1 + ΔProposal
+# Статус: template (не валидируется сам по себе)
+
+act_id: "act_N.0"  # заменить на конкретный: act_2.0, act_3.0...
+name: "TS-<Domain>_N.0"  # например: TS-Physics_2.0
+status: "proposed"  # proposed | validated | rejected
+validator_version: "TS-Validator-1.4"
+schema_version: "1.1.0"
+validated_at: null  # заполняется при валидации
+
+# Обязательные зависимости
+dependencies:
+  - "1.0"  # KVS ядро
+  - "1.1"  # KVS с ΔProposal
+
+# Конституционные инварианты (неизменяемые)
+constitutional_invariants:
+  A0: "act_distinction"  # акт различения как примитив
+  A_HP: "no_external_position"  # запрет внешней позиции
+  Z_rules:  # все запреты из KVS 1.1
+    - "Z-0"  # запрет субстанциализации
+    - "Z_Ω"  # различение ≠ различие
+    - "Z_R.1-Z_R.6"  # запреты на переходы
+    - "Z_HP"  # антропоцентрическая гигиена
+    - "Z_X"  # запрет трансцендентализации X
+
+# Профилированные уровни (заполняется для каждого домена)
+levels:
+  A:  # интерфейс действия
+    event_type: "<domain_specific_action>"  # например: "quantum_measurement"
+    agent_locus: "<point_of_reference>"
+  B:  # история/память
+    retention_policy: "<how_events_are_logged>"
+    causal_window: "<scope_for_Gamma_computation>"
+  C:  # правила/онтологии
+    epsilon_rules:  # адаптивный порог для домена
+      initial_value: 0.375
+      adaptive: true
+      source: "sandbox_calibration"
+    constraint_schema: "<UUID_ссылка_на_подграф>"
+  D:  # прогноз/становление
+    self_play_protocol: "<how_hypotheses_are_tested>"
+    trickster_detection: "<criteria_for_graph_anomaly>"
+  E:  # коадаптация/метанарративы
+    meta_narrative_update: "<how_rules_evolve>"
+    cross_domain_sync: "<protocol_for_E-semeosis>"
+
+# Язык времени (M4 ↔ YAML)
+language_contract:
+  M4_tags:  # список тегов для этого домена
+    - "<tag_1>"
+    - "<tag_2>"
+  clock_protocol:
+    base: "Lamport_semantic"
+    domain_offset: "<formula_for_tau_D>"
+  constraint_links:  # ссылки на C-правила
+    - "<rule_UUID>"
+
+# Метрики для валидации (заполняется TS-Validator)
+metrics:
+  delta_gamma_x: null  # вычисляется при валидации
+  epsilon_x: null
+  valid_bindings_ratio: null
+  x_commit_lock: false
+
+# Project mapping (явная связь с TS-Core)
+project_mapping:
+  TS-Graph: "<how_domain_events_map_to_graph_nodes>"
+  TS-Clock: "<how_domain_time_maps_to_tau>"
+  TS-Interpreter: "<how_domain_semantics_are_translated>"
+  TS-Optimizer: "<how_domain_metrics_are_scored>"
+
+# Заметки для валидатора (не исполняются, но помогают диагностике)
+validator_notes: |
+  Этот акт должен пройти все 4 слоя TS-Validator:
+  1. CoreCheck: инварианты A0, A_HP, Z_rules
+  2. GammaCheck: вычислимость Γ на causal_window
+  3. LanguageCheck: M4 ↔ YAML mapping
+  4. MetaCheck: ΔΓ_X > ε_X (если акт содержит предложения для уровня X)
