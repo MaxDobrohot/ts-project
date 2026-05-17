@@ -1,0 +1,81 @@
+# Шаблон доменного акта (генеративная грамматика ТС)
+# Версия: 1.1.0
+# Основание: KVS_1.1 + ΔProposal
+# Статус: template (не валидируется сам по себе)
+
+act_id: "act_N.0"  # заменить на конкретный: act_2.0, act_3.0...
+name: "TS-<Domain>_N.0"  # например: TS-Physics_2.0
+status: "proposed"  # proposed | validated | rejected
+validator_version: "TS-Validator-1.4"
+schema_version: "1.1.0"
+validated_at: null  # заполняется при валидации
+
+# Обязательные зависимости
+dependencies:
+  - "1.0"  # KVS ядро
+  - "1.1"  # KVS с ΔProposal
+
+# Конституционные инварианты (неизменяемые)
+constitutional_invariants:
+  A0: "act_distinction"  # акт различения как примитив
+  A_HP: "no_external_position"  # запрет внешней позиции
+  Z_rules:  # все запреты из KVS 1.1
+    - "Z-0"  # запрет субстанциализации
+    - "Z_Ω"  # различение ≠ различие
+    - "Z_R.1-Z_R.6"  # запреты на переходы
+    - "Z_HP"  # антропоцентрическая гигиена
+    - "Z_X"  # запрет трансцендентализации X
+
+# Профилированные уровни (заполняется для каждого домена)
+levels:
+  A:  # интерфейс действия
+    event_type: "<domain_specific_action>"  # например: "quantum_measurement"
+    agent_locus: "<point_of_reference>"
+  B:  # история/память
+    retention_policy: "<how_events_are_logged>"
+    causal_window: "<scope_for_Gamma_computation>"
+  C:  # правила/онтологии
+    epsilon_rules:  # адаптивный порог для домена
+      initial_value: 0.375
+      adaptive: true
+      source: "sandbox_calibration"
+    constraint_schema: "<UUID_ссылка_на_подграф>"
+  D:  # прогноз/становление
+    self_play_protocol: "<how_hypotheses_are_tested>"
+    trickster_detection: "<criteria_for_graph_anomaly>"
+  E:  # коадаптация/метанарративы
+    meta_narrative_update: "<how_rules_evolve>"
+    cross_domain_sync: "<protocol_for_E-semeosis>"
+
+# Язык времени (M4 ↔ YAML)
+language_contract:
+  M4_tags:  # список тегов для этого домена
+    - "<tag_1>"
+    - "<tag_2>"
+  clock_protocol:
+    base: "Lamport_semantic"
+    domain_offset: "<formula_for_tau_D>"
+  constraint_links:  # ссылки на C-правила
+    - "<rule_UUID>"
+
+# Метрики для валидации (заполняется TS-Validator)
+metrics:
+  delta_gamma_x: null  # вычисляется при валидации
+  epsilon_x: null
+  valid_bindings_ratio: null
+  x_commit_lock: false
+
+# Project mapping (явная связь с TS-Core)
+project_mapping:
+  TS-Graph: "<how_domain_events_map_to_graph_nodes>"
+  TS-Clock: "<how_domain_time_maps_to_tau>"
+  TS-Interpreter: "<how_domain_semantics_are_translated>"
+  TS-Optimizer: "<how_domain_metrics_are_scored>"
+
+# Заметки для валидатора (не исполняются, но помогают диагностике)
+validator_notes: |
+  Этот акт должен пройти все 4 слоя TS-Validator:
+  1. CoreCheck: инварианты A0, A_HP, Z_rules
+  2. GammaCheck: вычислимость Γ на causal_window
+  3. LanguageCheck: M4 ↔ YAML mapping
+  4. MetaCheck: ΔΓ_X > ε_X (если акт содержит предложения для уровня X)

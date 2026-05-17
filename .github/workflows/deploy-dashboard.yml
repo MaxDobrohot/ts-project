@@ -1,6 +1,8 @@
-name: Deploy TS-Validator Dashboard
+name: TS-Validator CI + Deploy
 on:
   push:
+    branches: [ main ]
+  pull_request:
     branches: [ main ]
   workflow_dispatch:
 
@@ -14,22 +16,51 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pyyaml
+      - name: Run pytest suite
+        run: python -m pytest tests/test_validator.py -v
+      - name: Run D-sandbox calibration
+        run: |
+          echo "🔧 Запуск D-sandbox для калибровки ε_friction..."
+          python3 validator/ts_d_sandbox.py
+          echo "✅ Калибровка завершена. ε_friction обновлён в validator_config.yaml"
+      - name: Run MetaCheck
+        run: |
+          echo "🔍 Запуск Layer 4 (MetaCheck)..."
+          python3 validator/ts_layer4_metacheck.py
+      - name: Generate dashboard (snapshot)
+        run: |
+          echo "📊 Генерация дашборда (B-level snapshot)..."
+          python3 scripts/visualize_metrics.py --html
+
   deploy:
+    needs: validate
+    if: github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
       - name: Setup Pages
-        uses: actions/configure-pages@v6
-        with:
-          enablement: true
+        uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: 'output'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v4
