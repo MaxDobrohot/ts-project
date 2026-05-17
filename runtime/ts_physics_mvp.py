@@ -17,11 +17,10 @@ DOMAIN_ID = "physics_2.0"
 BASE_KVS = "1.1"
 
 def get_db_config():
-    """Конфигурация подключения (для MVP - локальная)"""
+    """Конфигурация для Neo4j 4.4.x + driver 4.4.13"""
     return {
         "uri": "bolt://localhost:7687",
-        "user": "neo4j",
-        "password": "password" # Замените на ваш пароль, если меняли
+        "auth": ("neo4j", "Dobrohotoff-1968")  # <-- замените "password" на тот, что вы задали в Neo4j Browser
     }
 
 def map_quantum_event_to_node(event_data):
@@ -77,7 +76,7 @@ def main():
     if HAS_NEO4J:
         config = get_db_config()
         try:
-            driver = GraphDatabase.driver(config["uri"], auth=(config["user"], config["password"]))
+            driver = GraphDatabase.driver(config["uri"], auth=config["auth"])
             driver.verify_connectivity()
             print("✅ Подключение к Neo4j успешно.")
             
