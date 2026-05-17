@@ -1,0 +1,12 @@
+version: "1.1"
+based_on: "KVS_1.0"
+changes:
+  - git_hook_scope: "changed_files_only"  # Γ_Locality compliant
+  - dashboard_policy: "snapshot_only"     # X_Commit_Lock compliant
+  - schema_version: "1.1.0"
+validation:
+  delta_gamma_x: 0.645
+  epsilon_x: 0.25
+  status: "confirmed"
+  confirmed_by: "TS-Validator-1.4"
+  confirmed_at: "2026-05-17T00:00:00Z"
