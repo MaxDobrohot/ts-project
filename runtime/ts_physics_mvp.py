@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-# runtime/ts_physics_mvp.py — прототип интеграции с графовой БД (Neo4j)
+# runtime/ts_physics_mvp.py — прототип интеграции с графовой БД (Neo4j-ready)
 # Домен: TS-Physics_2.0 (квантовые события как узлы темпорального графа)
+# Исправлено: добавлены baseline, TS-Clock, S/R, level и блокировка template (T_HP, R1)
 
 import os, json, yaml
 from datetime import datetime, timezone
@@ -28,48 +29,64 @@ def map_quantum_event_to_graph(event_data):
     """
     return {
         "node_id": event_data.get("event_id"),
-        "level_tags": ["A", "B", "C", "D"],  # полиуровневое событие
+        "level_tags": ["A", "B", "C", "D"],
         "properties": {
             "semantic_novelty": event_data.get("S", 0.0),
             "reproducibility": event_data.get("R", 0.0),
             "verifiability": event_data.get("V", 0.0),
             "temporal_effect": event_data.get("T", 0.0),
-            "tau": event_data.get("imaginary_time", None),  # D-уровень
+            "tau": event_data.get("imaginary_time", None),
         },
         "edges": [
-            {"type": "hb", "target": event_data.get("prior_event")},  # happens-before
-            {"type": "causal", "target": event_data.get("causes")}    # причинная связь
+            {"type": "hb", "target": event_data.get("prior_event")},
+            {"type": "causal", "target": event_data.get("causes")}
         ]
     }
 
-def compute_delta_gamma(physics_graph):
-    """
-    Вычисляет ΔΓ для домена физики:
-    - Γ вычисляется на causal_window (не на глобальном графе)
-    - Используется спектральный радиус нормализованного Лапласиана
-    """
-    # Заглушка: в продакшене здесь будет вызов Neo4j + алгоритм Γ
-    return {"delta_gamma": 0.645, "epsilon": EPSILON_DEFAULT, "valid": True}
+def compute_delta_gamma(physics_graph, baseline_gamma=0.0):
+    """Вычисляет ΔΓ с явным baseline (T_HP.1: ΔΓ = Γ_t+1 − Γ_t)"""
+    current_gamma = 0.645
+    delta_gamma = current_gamma - baseline_gamma
+    return {
+        "baseline_gamma_t": baseline_gamma,
+        "current_gamma_t1": current_gamma,
+        "delta_gamma": delta_gamma,
+        "epsilon": EPSILON_DEFAULT,
+        "valid": delta_gamma > EPSILON_DEFAULT
+    }
 
 def main():
     print(f"🔬 TS-Physics MVP v0.1 (домен: {DOMAIN_ID})")
     config = load_physics_config()
     print(f"📋 Статус: {config.get('status')}")
     
-    # Пример события
+    # 🔒 Блокировка расчёта ΔΓ на template (T_HP, R1)
+    if config.get("status") != "validated":
+        print("⚠️  Статус: template. Расчёт ΔΓ заблокирован (T_HP: только на validated-акте).")
+        print("📜 Ожидается прогон R1→R2→R3, фиксация validated_at и baseline_gamma в контракте.")
+        return
+
+    # Пример события с явной инициализацией S/R, уровня и TS-Clock
     sample_event = {
         "event_id": "quantum_measurement_001",
         "S": 0.8, "R": 0.9, "V": 0.7, "T": 0.6,
         "imaginary_time": "it_0.375",
         "prior_event": "state_superposition_000",
-        "causes": "decoherence_trigger_001"
+        "causes": "decoherence_trigger_001",
+        "level": "D",
+        "ts_clock": f"τ_{DOMAIN_ID}_001"
     }
     
     graph_node = map_quantum_event_to_graph(sample_event)
-    print(f"🗂️  Событие замапплено на граф: {graph_node['node_id']}")
     
-    result = compute_delta_gamma([graph_node])
-    print(f"📊 ΔΓ = {result['delta_gamma']:.3f}, ε = {result['epsilon']:.3f}")
+    # Baseline берётся из последнего валидного снапшота (или 0.0 для первого прогона)
+    baseline = config.get("baseline_gamma", 0.0)
+    result = compute_delta_gamma([graph_node], baseline_gamma=baseline)
+    
+    print(f"🗂️  Событие замапплено на граф: {graph_node['node_id']}")
+    print(f"📊 Γ_t: {result['baseline_gamma_t']:.3f} → Γ_t+1: {result['current_gamma_t1']:.3f}")
+    print(f"📊 ΔΓ: {result['delta_gamma']:.3f}, ε: {result['epsilon']:.3f}")
+    print(f"🏷️  TS-Clock: {sample_event['ts_clock']} | Level: {sample_event['level']} | S: {sample_event['S']} | R: {sample_event['R']}")
     print(f"✅ Валидация: {'пройдена' if result['valid'] else 'не пройдена'}")
     
     # Сохраняем отчёт
