@@ -1,0 +1,21 @@
+# Мостовой контракт: связь КВС 1.1 с доменными Актами N≥2.0
+# Статус: constitutional_bridge
+# Версия: 1.1.0
+
+bridge_contract:
+  constitutional_fixes:
+    - "Z_R.5"          # запрет внешней инициации
+    - "Γ_Locality"     # локальность вычислений Γ
+    - "A0_multi"       # интерференция актов
+    - "X_Commit_Lock"  # мета-коммит только после валидации
+  
+  principles:
+    - "Γ_Locality"
+    - "PR_X3"
+    - "Z_Invariant_Rollback"
+    - "V_Computation"
+
+  mapping:
+    core_invariants: ["A0", "A_HP", "Z-0", "Z_Ω", "Z_R.1-Z_R.6"]
+    domain_profiling: ["levels", "language_contract", "metrics"]
+    validation_pipeline: ["CoreCheck", "GammaCheck", "LanguageCheck", "MetaCheck"]
