@@ -1,95 +1,97 @@
 #!/usr/bin/env python3
-# runtime/ts_physics_mvp.py — Интеграция с Neo4j (TS-Graph v0.2)
+# runtime/ts_physics_mvp.py — TS-Graph v0.4 (ΔΓ Pipeline + Neo4j 5.x ready)
 # Домен: TS-Physics_2.0 (Сверхпроводимость)
 
 import os, json, yaml
 from datetime import datetime, timezone
 
-# Попытка импорта драйвера
 try:
-    from neo4j import GraphDatabase
+    from neo4j import GraphDatabase, basic_auth
     HAS_NEO4J = True
 except ImportError:
     HAS_NEO4J = False
 
-# 🔒 Конституционные константы
 DOMAIN_ID = "physics_2.0"
 BASE_KVS = "1.1"
 
-def get_db_config():
-    """Конфигурация для Neo4j 4.4.x + driver 4.4.13"""
-    return {
-        "uri": "bolt://localhost:7687",
-        "auth": ("neo4j", "Dobrohotoff-1968")  # <-- замените "password" на тот, что вы задали в Neo4j Browser
-    }
+def load_act_config():
+    path = f"contracts/domains/TS-Physics_2.0/subacts/superconductivity_2.1.yaml"
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            return yaml.safe_load(f)
+    return {"status": "template", "note": "Subact not found"}
 
-def map_quantum_event_to_node(event_data):
-    """
-    Маппинг события на Узел Темпорального Графа (TS-Node).
-    Согласно Конституции:
-    - Label: TS_Event (А-модальность)
-    - Props: S, R, V, T (инварианты события)
-    - TS-Clock: tau (метка времени)
-    """
-    return {
-        "labels": ["TS_Event", "QuantumMeasurement"],
-        "properties": {
-            "event_id": event_data.get("event_id"),
-            "S": event_data.get("S", 0.0),
-            "R": event_data.get("R", 0.0),
-            "V": event_data.get("V", 0.0),
-            "T": event_data.get("T", 0.0),
-            "tau": event_data.get("imaginary_time", "tau_0"),
-            "domain": DOMAIN_ID,
-            "timestamp": datetime.now(timezone.utc).isoformat()
-        }
-    }
+def compute_delta_gamma(baseline, current):
+    """T_HP.1: ΔΓ = Γ_{t+1} − Γ_t. Блокируется, если статус ≠ validated"""
+    return round(current - baseline, 4)
 
-def write_to_graph(driver, event_node):
-    """Запись узла в граф (C-уровень: Правила онтологии)"""
+def write_to_neo4j(driver, event_id, metrics):
+    """Cypher-запрос для записи узла + метрик ΔΓ (Γ_Locality compliant)"""
+    query = """
+    MERGE (e:TS_Event {event_id: $event_id})
+    SET e.baseline_gamma = $baseline,
+        e.current_gamma = $current,
+        e.delta_gamma = $delta,
+        e.epsilon = $epsilon,
+        e.valid = $valid,
+        e.ts_clock = $ts_clock,
+        e.updated = timestamp()
+    RETURN e.event_id
+    """
     with driver.session() as session:
-        # Используем MERGE, чтобы не дублировать события с тем же ID (Z_R.1)
-        query = """
-        MERGE (e:TS_Event {event_id: $event_id})
-        SET e.S = $S, e.R = $R, e.V = $V, e.T = $T,
-            e.tau = $tau, e.domain = $domain, e.updated = $timestamp
-        RETURN e.event_id as id
-        """
-        result = session.run(query, **event_node["properties"])
-        return result.single()["id"]
+        return session.run(query, **metrics).single()["e.event_id"]
 
 def main():
-    print(f"🔬 TS-Physics MVP v0.2 (Интеграция Neo4j)")
-    print(f"📋 Домен: {DOMAIN_ID}")
-    
-    # Пример события
-    sample_event = {
-        "event_id": "sc_coherence_001",
-        "S": 0.85, "R": 0.92, "V": 0.75, "T": 0.60,
-        "imaginary_time": "tau_sc_critical"
-    }
-    
-    node_data = map_quantum_event_to_node(sample_event)
-    print(f"📦 Подготовлен узел: {node_data['properties']['event_id']}")
+    print(f"🔬 TS-Graph v0.4 (ΔΓ Pipeline)")
+    config = load_act_config()
+    status = config.get("status", "template")
+    print(f"📋 Акт: superconductivity_2.1 | Статус: {status}")
 
-    # Попытка подключения
+    # 🔒 Блокировка ΔΓ на невалидированных актах (T_HP + R1)
+    if status != "validated":
+        print("⚠️  Расчёт ΔΓ заблокирован. Требуется status: 'validated' и прогон R1→R2→R3.")
+        print("📜 После валидации: baseline_gamma фиксируется, ΔΓ вычисляется на causal_window.")
+        return
+
+    # 📊 Метрики (в продакшене берутся из TS-Optimizer / Neo4j)
+    baseline_gamma = 0.0
+    current_gamma = 0.645
+    delta = compute_delta_gamma(baseline_gamma, current_gamma)
+    epsilon = 0.375
+    valid = delta > epsilon
+    ts_clock = f"τ_{DOMAIN_ID}_001"
+
+    print(f"📊 Γ_t: {baseline_gamma:.3f} → Γ_t+1: {current_gamma:.3f}")
+    print(f"📊 ΔΓ: {delta:.3f} | ε: {epsilon:.3f} | Valid: {valid}")
+    print(f"🏷️  TS-Clock: {ts_clock} | S: 0.85 | R: 0.92")
+
+    # 💾 Запись в Neo4j (если доступен)
     if HAS_NEO4J:
-        config = get_db_config()
         try:
-            driver = GraphDatabase.driver(config["uri"], auth=config["auth"])
+            driver = GraphDatabase.driver("bolt://localhost:7687", auth=basic_auth("neo4j", "password"))
             driver.verify_connectivity()
-            print("✅ Подключение к Neo4j успешно.")
-            
-            # Запись
-            saved_id = write_to_graph(driver, node_data)
-            print(f"💾 Событие сохранено в графе (ID: {saved_id})")
-            
+            saved_id = write_to_neo4j(driver, "sc_coherence_001", {
+                "event_id": "sc_coherence_001",
+                "baseline": baseline_gamma,
+                "current": current_gamma,
+                "delta": delta,
+                "epsilon": epsilon,
+                "valid": valid,
+                "ts_clock": ts_clock
+            })
+            print(f"✅ Neo4j: узел {saved_id} записан с ΔΓ-метриками")
             driver.close()
         except Exception as e:
-            print(f"⚠️  Neo4j недоступен ({e}). Режим эмуляции: данные не сохранены в БД.")
-            print("📜 Совет: Запустите Neo4j Desktop или Docker контейнер.")
+            print(f"⚠️  Neo4j недоступен ({e}). Режим эмуляции.")
     else:
         print("⚠️  Библиотека neo4j не найдена. Режим эмуляции.")
+
+    # 📦 Сохранение отчёта
+    report = {"domain": DOMAIN_ID, "delta_gamma": delta, "epsilon": epsilon, "valid": valid, "ts_clock": ts_clock}
+    os.makedirs("output", exist_ok=True)
+    with open("output/delta_gamma_report.json", "w") as f:
+        json.dump(report, f, indent=2)
+    print("💾 Отчёт: output/delta_gamma_report.json")
 
 if __name__ == "__main__":
     main()
