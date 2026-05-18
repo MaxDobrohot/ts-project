@@ -1,0 +1,10 @@
+{
+  "valid": true,
+  "subact_id": "2.1",
+  "baseline_gamma": 0.0,
+  "current_gamma": 0.645,
+  "delta_gamma": 0.645,
+  "epsilon": 0.375,
+  "valid_binding": true,
+  "ts_clock": "tau_sc = tau + it_critical_temp"
+}

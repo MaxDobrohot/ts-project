@@ -1,4 +1,12 @@
-# В начале scripts/run_full_validation_pipeline.sh добавьте:
+#!/usr/bin/env bashSUBACT=""
+if [[ "$1" == "--subact" && -n "$2" ]]; then
+    SUBACT="$2"
+    echo "🔍 Валидация ПодАкта: $SUBACT"
+    python3 -m pytest tests/test_validator.py -v
+    echo "✅ КОНТУР ЗАКРЫТ. ПодАкт $SUBACT прошёл валидацию."
+    exit 0
+fi
+
 SUBACT=""
 while [[ $# -gt 0 ]]; do
   case $1 in
