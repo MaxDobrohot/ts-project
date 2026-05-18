@@ -1,0 +1,36 @@
+{
+  "domain": "physics_2.0",
+  "kvs_base": "1.1",
+  "timestamp": "2026-05-17T05:05:06.613559+00:00",
+  "sample_mapping": {
+    "node_id": "quantum_measurement_001",
+    "level_tags": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "properties": {
+      "semantic_novelty": 0.8,
+      "reproducibility": 0.9,
+      "verifiability": 0.7,
+      "temporal_effect": 0.6,
+      "tau": "it_0.375"
+    },
+    "edges": [
+      {
+        "type": "hb",
+        "target": "state_superposition_000"
+      },
+      {
+        "type": "causal",
+        "target": "decoherence_trigger_001"
+      }
+    ]
+  },
+  "gamma_result": {
+    "delta_gamma": 0.645,
+    "epsilon": 0.375,
+    "valid": true
+  }
+}
