@@ -41,3 +41,8 @@
 | 2026-05-17T00:00:00Z | registry:fix | AMEND | TS-Validator-1.4 | ✅ FIXED | Устранены: дубль bridge:m4, некорректная вложенность core:1.1, лишние скобки в index.json. Добавлен адаптационный триггер ε в validator_config.yaml. Constraint integrity восстановлена. |
 | 2026-05-18T00:00:00Z | subact:validate | VALIDATE | TS-Validator-1.4 | ✅ VALIDATED | TS-Physics/Superconductivity_2.1 прошёл все 4 слоя валидатора. Добавлены: Z_Phys.2, project_mapping, cross_domain_gamma, epsilon_mapping. ΔΓ = 0.645 > ε = 0.375. Запись в графе: sc_coherence_001. |
 | 2026-05-18T00:00:00Z | subact:validate | VALIDATE | TS-Validator-1.4 | ✅ VALIDATED | TS-Physics/Superconductivity_2.1: 11/11 tests passed, ΔΓ=0.645 > ε=0.375, baseline=0.0, Neo4j node 2.1_001 recorded, causal_window=critical_temperature_window, TS-Clock=tau_sc+it_critical_temp. |
+2026-05-19 — зафиксирован протокол сохранения контекста: Z_Context_Preservation.
+Мы разделяем ответственность файлов, чтобы устранить дублирование и тавтологии:
+    README.md — это «Лицо» (A-уровень). Быстрый обзор, структура и «Как запустить». Ничего лишнего.
+    CONTRIBUTING.md — это «Закон» (C-уровень). Правила работы, протокол сессий (Z_Context_Preservation) и конституционные запреты.
+    CONTEXT_SNAPSHOT.md — это «Память» (B-уровень). Инвариантное состояние системы прямо сейчас. Только данные, никаких инструкций.
